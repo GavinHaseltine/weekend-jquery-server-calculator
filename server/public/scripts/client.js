@@ -1,4 +1,4 @@
-const { response } = require("express");
+//const { response } = require("express");
 
 $(document).ready(handleReady);
 
@@ -11,12 +11,39 @@ function handleReady() {
   console.log("jquery is loaded!")
 
   getCalcHistory();
-//    $('#equalsButton').on('click',handleEquals);
+    $('#equalsButton').on('click',handleEquals);
 //    $('#clearButton').on('click',handleClear);
 //    $('#plusButton').on('click', makePlus);
 //    $('#subButton').on('click', makeMinus);
 //    $('#multiplyButton').on('click', makeMultiply);
 //    $('#divideButton').on('click', makeDivide);
+}
+
+function handleEquals(){
+    console.log('In handleEquals');
+
+    let input1 = $('#inputOne').val();
+    let input2 = $('#inputTwo').val();
+
+    let dataToSend = {
+        input1,
+        input2,
+        symbol
+    }
+    console.log(dataToSend);
+
+    $.ajax({
+        method: 'POST',
+        url: '/calc',
+        data: dataToSend
+    }).then((response) => {
+        console.log('POST done')
+        getCalcHistory()
+    }).catch((error) => {
+        alert("Error with POST /calc")
+        console.log("POST: ", error)
+    })
+
 }
 
 
@@ -51,7 +78,14 @@ function renderCurrentResult(currentResult) {
 
 function render(bigMath){
     console.log('in render')
+    $('#outputArea').empty()
 
+    for (let calc of bigMath) {
+        console.log("Inside of For Loop")
+        $('#allCalcs').append(`
+            <li>${calc.number1}  ${calc.operator}  ${calc.number2} = ${calc.result}</li>
+        `)
+    }
 }
 
 // function handleEquals(){
