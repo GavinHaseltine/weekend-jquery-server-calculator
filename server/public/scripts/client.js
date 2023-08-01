@@ -12,12 +12,23 @@ function handleReady() {
 
   getCalcHistory();
     $('#equalsButton').on('click',handleEquals);
+    //can select a whole CLASS
+    $('.symbol').on('click', handleSymbol);
+
+    $('#clearButton').on('click', handleClear);
 //    $('#clearButton').on('click',handleClear);
 //    $('#plusButton').on('click', makePlus);
 //    $('#subButton').on('click', makeMinus);
 //    $('#multiplyButton').on('click', makeMultiply);
 //    $('#divideButton').on('click', makeDivide);
 }
+
+//USING (this) is powerful as it finds whats the text
+function handleSymbol(){
+    symbol = $(this).text()
+    console.log("Selected", symbol)
+}
+
 
 function handleEquals(){
     console.log('In handleEquals');
@@ -44,6 +55,13 @@ function handleEquals(){
         console.log("POST: ", error)
     })
 
+}
+
+function handleClear(){
+    console.log('in handleClear');
+    $('#inputOne').val('');
+    $('#inputTwo').val('');
+    symbol = undefined
 }
 
 
@@ -82,8 +100,8 @@ function render(bigMath){
 
     for (let calc of bigMath) {
         console.log("Inside of For Loop")
-        $('#allCalcs').append(`
-            <li>${calc.number1}  ${calc.operator}  ${calc.number2} = ${calc.result}</li>
+        $('#outputArea').append(`
+            <li>${calc.input1}  ${calc.symbol}  ${calc.input2} = ${calc.result}</li>
         `)
     }
 }
